@@ -10,7 +10,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-const scanFileLoc = "/home/danielstuessy/.open-scanner/image.dng"
+const scanFileLoc = "~/.open-scanner/image.dng"
 const scanCommand = "libcamera-still --raw on --nopreview -o %s"
 
 const hostEnvVar = "FILM_SCANNER_HOST"
