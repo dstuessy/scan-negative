@@ -57,7 +57,7 @@ func main() {
 						log.Fatal(err)
 					}
 
-					log.Println("Scan saved at", scanFileLoc)
+					log.Println("Scan saved at", fmt.Sprintf("%s:%s", host, scanFileLoc))
 					log.Println("Downloading the scan...")
 
 					downloadFileLoc := fmt.Sprintf("%s/%s.dng", ctx.String("output"), ctx.String("name"))
