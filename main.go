@@ -13,8 +13,6 @@ import (
 const scanFileLoc = "/home/danielstuessy/.open-scanner/image.dng"
 const scanCommand = "libcamera-still --raw on --nopreview -o %s"
 
-// const host = "danielstuessy@filmscanner.local"
-
 const hostEnvVar = "FILM_SCANNER_HOST"
 
 func main() {
