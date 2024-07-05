@@ -38,6 +38,8 @@ func main() {
 				Usage:   "Scan an image",
 				Flags: []cli.Flag{
 					&cli.StringFlag{Name: "host", Value: os.Getenv(hostEnvVar), Usage: fmt.Sprintf("The host of the scanner either as IP or Bonjour hostname with the username (username@host). Can be assigned as %s environment variable", hostEnvVar)},
+					&cli.StringFlag{Name: "output", Aliases: []string{"o"}, Value: ".", Usage: "The destination folder. Defaults to '.'. Note, omit trailing slashes"},
+					&cli.StringFlag{Name: "name", Aliases: []string{"n"}, Value: "image", Usage: "The base name of the file downloaded, excluding its file extension. Defaults to 'image', resulting in 'image.dng'"},
 				},
 				Action: func(ctx *cli.Context) error {
 					log.Println("Asking scanner to make a scan...")
@@ -57,10 +59,11 @@ func main() {
 						log.Fatal(err)
 					}
 
-					log.Println("Scan saved at /home/danielstuessy/.open-scanner/image.dng")
+					log.Println("Scan saved at", scanFileLoc)
 					log.Println("Downloading the scan...")
 
-					downloadCmd := exec.Command("rsync", "-av", fmt.Sprintf("%s:%s", host, scanFileLoc), ".")
+					downloadFileLoc := fmt.Sprintf("%s/%s.dng", ctx.String("output"), ctx.String("name"))
+					downloadCmd := exec.Command("rsync", "-av", fmt.Sprintf("%s:%s", host, scanFileLoc), downloadFileLoc)
 					downloadStdErr := strings.Builder{}
 					downloadCmd.Stderr = &downloadStdErr
 					if err := downloadCmd.Run(); err != nil {
@@ -69,7 +72,7 @@ func main() {
 						log.Fatal(err)
 					}
 
-					log.Println("Scan downloaded to ./image.dng")
+					log.Println("Scan downloaded to", downloadFileLoc)
 
 					return nil
 				},
