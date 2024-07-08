@@ -22,7 +22,6 @@ const previewPortEnvVar = "FILM_SCANNER_PREVIEW_PORT"
 const defaultPort = "8888"
 
 func main() {
-
 	app := &cli.App{
 		Name:  "Terminal Scanner",
 		Usage: "Scan your film from the comfort of your terminal",
