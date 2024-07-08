@@ -2,8 +2,6 @@
 
 CLI tool to scan film negatives with a Raspberry Pi via SSH
 
-See help for usage:
-
 ```
 NAME:
    Terminal Scanner - Scan your film from the comfort of your terminal
