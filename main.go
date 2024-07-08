@@ -7,15 +7,19 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 
 	"github.com/urfave/cli/v2"
 )
 
 const scanFileLoc = "~/.open-scanner/image.dng"
 const scanCommand = "libcamera-still --raw on --nopreview -o %s"
-const previewCommand = "libcamera-vid -t 0 --width 1920 --height 1080 --codec h264 --inline --listen -o tcp://0.0.0.0:8888"
+const previewCommand = "libcamera-vid -t 0 --width 1920 --height 1080 --codec h264 --inline --listen -o tcp://0.0.0.0:%s"
 
 const hostEnvVar = "FILM_SCANNER_HOST"
+const previewPortEnvVar = "FILM_SCANNER_PREVIEW_PORT"
+
+const defaultPort = "8888"
 
 func main() {
 
@@ -24,6 +28,7 @@ func main() {
 		Usage: "Scan your film from the comfort of your terminal",
 		Flags: []cli.Flag{
 			&cli.StringFlag{Name: "host", Value: os.Getenv(hostEnvVar), Usage: fmt.Sprintf("The host of the scanner either as IP or Bonjour hostname with the username (username@host). Can be assigned as %s environment variable", hostEnvVar)},
+			&cli.StringFlag{Name: "port", Value: os.Getenv(previewPortEnvVar), Usage: fmt.Sprintf("The port of the scanner used to preview the video feed. Can be assigned as %s environment variable", previewPortEnvVar)},
 		},
 		Commands: []*cli.Command{
 			{
@@ -39,7 +44,13 @@ func main() {
 						log.Fatal("No host provided. Please see --help for usage")
 					}
 
-					previewCmd := exec.Command("ssh", "-v", host, previewCommand)
+					port := ctx.String("port")
+					if port == "" {
+						log.Println("No port provided. Using default port ", defaultPort)
+						port = defaultPort
+					}
+
+					previewCmd := exec.Command("ssh", "-v", host, fmt.Sprintf(previewCommand, port))
 
 					previewStdOut, err := previewCmd.StdoutPipe()
 					if err != nil {
@@ -59,12 +70,23 @@ func main() {
 					}
 					go io.Copy(previewStdIn, os.Stdin)
 
-					if err := previewCmd.Run(); err != nil {
+					go func() {
+						if err := previewCmd.Run(); err != nil {
+							log.Fatal(err)
+						}
+					}()
+
+					// Giving the preview some time to start
+					time.Sleep(1 * time.Second)
+
+					videoCmd := exec.Command("vlc", fmt.Sprintf("tcp/h264://%s:%s/", host, port))
+					videoStdErr := strings.Builder{}
+					videoCmd.Stderr = &videoStdErr
+					if err := videoCmd.Run(); err != nil {
+						log.Println("Something went wrong trying to play the video feed in VLC")
+						log.Println(videoStdErr.String())
 						log.Fatal(err)
 					}
-
-					log.Println("Preview available at tcp://", host, ":8888")
-					fmt.Println("Ctrl+C to stop the preview...")
 
 					return nil
 				},
