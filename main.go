@@ -26,14 +26,14 @@ func main() {
 		Name:  "scan-negative",
 		Usage: "Scan your film from the comfort of your terminal",
 		Flags: []cli.Flag{
-			&cli.StringFlag{Name: "host", Value: os.Getenv(hostEnvVar), Usage: fmt.Sprintf("The host of the scanner either as IP or Bonjour hostname with the username (username@host). Can be assigned as %s environment variable", hostEnvVar)},
-			&cli.StringFlag{Name: "port", Value: os.Getenv(previewPortEnvVar), Usage: fmt.Sprintf("The port of the scanner used to preview the video feed. Can be assigned as %s environment variable", previewPortEnvVar)},
+			&cli.StringFlag{Name: "host", Value: os.Getenv(hostEnvVar), Usage: fmt.Sprintf("The host of the scanner either as IP or hostname with the username (username@host). Can be assigned as %s environment variable", hostEnvVar)},
+			&cli.StringFlag{Name: "preview-port", Value: os.Getenv(previewPortEnvVar), Usage: fmt.Sprintf("The port of the scanner used to preview the video feed. Can be assigned as %s environment variable", previewPortEnvVar)},
 		},
 		Commands: []*cli.Command{
 			{
 				Name:    "preview",
 				Aliases: []string{"p"},
-				Usage:   "Preview what the scanner sees",
+				Usage:   "Preview what the scanner sees in VLC Player",
 				Action: func(ctx *cli.Context) error {
 					log.Println("Asking scanner to preview its view...")
 
@@ -43,7 +43,7 @@ func main() {
 						log.Fatal("No host provided. Please see --help for usage")
 					}
 
-					port := ctx.String("port")
+					port := ctx.String("preview-port")
 					if port == "" {
 						log.Println("No port provided. Using default port ", defaultPort)
 						port = defaultPort
@@ -95,8 +95,8 @@ func main() {
 				Aliases: []string{"s"},
 				Usage:   "Scan an image",
 				Flags: []cli.Flag{
-					&cli.StringFlag{Name: "output", Aliases: []string{"o"}, Value: ".", Usage: "The destination folder. Defaults to '.'. Note, omit trailing slashes"},
-					&cli.StringFlag{Name: "name", Aliases: []string{"n"}, Value: "image", Usage: "The base name of the file downloaded, excluding its file extension. Defaults to 'image', resulting in 'image.dng'"},
+					&cli.StringFlag{Name: "output", Aliases: []string{"o"}, Value: ".", Usage: "The destination directory. Omit trailing slashes"},
+					&cli.StringFlag{Name: "base-name", Aliases: []string{"n"}, Value: "image", Usage: "The base name of the file downloaded, excluding its file extension."},
 				},
 				Action: func(ctx *cli.Context) error {
 					log.Println("Asking scanner to make a scan...")
@@ -119,7 +119,7 @@ func main() {
 					log.Println("Scan saved at", fmt.Sprintf("%s:%s", host, scanFileLoc))
 					log.Println("Downloading the scan...")
 
-					downloadFileLoc := fmt.Sprintf("%s/%s.dng", ctx.String("output"), ctx.String("name"))
+					downloadFileLoc := fmt.Sprintf("%s/%s.dng", ctx.String("output"), ctx.String("base-name"))
 					downloadCmd := exec.Command("rsync", "-av", fmt.Sprintf("%s:%s", host, scanFileLoc), downloadFileLoc)
 					downloadStdErr := strings.Builder{}
 					downloadCmd.Stderr = &downloadStdErr
