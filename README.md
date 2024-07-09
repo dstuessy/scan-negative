@@ -2,6 +2,17 @@
 
 CLI tool to scan film negatives with a Raspberry Pi via SSH.
 
+## Contents
+
+- [Usage](#usage)
+- [Prerequisites](#prerequisites)
+
+## Prerequisites
+
+- A Raspberry Pi with a camera looking at some film negatives.
+- SSH access to your Raspberry Pi via public key pair.
+- Libcamera support on the raspberry pi. The legacy API won't work.
+
 ## Usage
 
 ```
