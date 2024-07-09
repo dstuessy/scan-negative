@@ -23,7 +23,7 @@ const defaultPort = "8888"
 
 func main() {
 	app := &cli.App{
-		Name:  "Terminal Scanner",
+		Name:  "scan-negative",
 		Usage: "Scan your film from the comfort of your terminal",
 		Flags: []cli.Flag{
 			&cli.StringFlag{Name: "host", Value: os.Getenv(hostEnvVar), Usage: fmt.Sprintf("The host of the scanner either as IP or Bonjour hostname with the username (username@host). Can be assigned as %s environment variable", hostEnvVar)},

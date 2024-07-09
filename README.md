@@ -1,13 +1,15 @@
-# Terminal Film Scanner
+# Scan Negative
 
-CLI tool to scan film negatives with a Raspberry Pi via SSH
+CLI tool to scan film negatives with a Raspberry Pi via SSH.
+
+## Usage
 
 ```
 NAME:
-   Terminal Scanner - Scan your film from the comfort of your terminal
+   scan-negative - Scan your film from the comfort of your terminal
 
 USAGE:
-   Terminal Scanner [global options] command [command options]
+   scan-negative [global options] command [command options]
 
 COMMANDS:
    preview, p  Preview what the scanner sees
