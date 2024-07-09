@@ -21,3 +21,35 @@ GLOBAL OPTIONS:
    --port value  The port of the scanner used to preview the video feed. Can be assigned as FILM\_SCANNER\_PREVIEW\_PORT environment variable
    --help, -h    show help
 ```
+
+### Scan Command
+
+Scan a film negative
+
+```
+NAME:
+   scan-negative scan - Scan an image
+
+USAGE:
+   scan-negative scan [command options]
+
+OPTIONS:
+   --output value, -o value  The destination folder. Defaults to '.'. Note, omit trailing slashes (default: ".")
+   --name value, -n value    The base name of the file downloaded, excluding its file extension. Defaults to 'image', resulting in 'image.dng' (default: "image")
+   --help, -h                show help
+```
+
+### Preview Command
+
+Preview what is viewable from the scanner's camera. Useful to frame and find focus.
+
+```
+NAME:
+   scan-negative preview - Preview what the scanner sees
+
+USAGE:
+   scan-negative preview [command options]
+
+OPTIONS:
+   --help, -h  show help
+```
