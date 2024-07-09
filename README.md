@@ -16,7 +16,7 @@ CLI tool to scan film negatives with a Raspberry Pi via SSH.
 - [SSH](https://en.wikipedia.org/wiki/Secure_Shell) installed on your client machine[^1].
 - [Rsync](https://en.wikipedia.org/wiki/Rsync) installed on your client machine[^1].
 
-[1]: i.e. the machine you're using to run this command.
+[^1]: i.e. the machine you're using to run this command.
 
 ## Usage
 
