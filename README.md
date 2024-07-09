@@ -12,6 +12,11 @@ CLI tool to scan film negatives with a Raspberry Pi via SSH.
 - A Raspberry Pi with a camera looking at some film negatives.
 - SSH access to your Raspberry Pi via public key pair.
 - Libcamera support on the raspberry pi. The legacy API won't work.
+- A folder called `.open-scanner` in your Raspberry Pi's home directory. This will depend on which user you use.
+- [SSH](https://en.wikipedia.org/wiki/Secure_Shell) installed on your client machine[^1].
+- [Rsync](https://en.wikipedia.org/wiki/Rsync) installed on your client machine[^1].
+
+[1]: i.e. the machine you're using to run this command.
 
 ## Usage
 
