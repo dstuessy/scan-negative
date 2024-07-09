@@ -4,8 +4,8 @@ CLI tool to scan film negatives with a Raspberry Pi via SSH.
 
 ## Contents
 
-- [Usage](#usage)
 - [Prerequisites](#prerequisites)
+- [Usage](#usage)
 
 ## Prerequisites
 
